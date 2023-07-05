@@ -1,0 +1,46 @@
+---
+
+- name: Get public keys from GitHub
+  hosts: supervisor
+  vars:
+    github_user: s33g
+    github_personal_access_token: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      31633335636336386433653236633530633031316233346666373162386233643337623237633063
+      3839623163616661623338343339343366653265623062330a626361396362663739356633346264
+      66393537303130383536313031393064326562323664663462303437386162623235383861376639
+      6138383061616330310a333830313733656238326663353963623564383633343637653330616536
+      66623237643531343037376534663962353161393834363831393634383166363733393639323062
+      37366565653335316630316632376137363639333966663534306238636261366632366635366562
+      33656231383963303863316265646438363432366234373538393332336430303063313632373938
+      65643331343130353562646231343362633266666165323461343063353166643632633938623638
+      3430
+    ssh_key_filename: ~/.ssh/id_rsa
+    machine_name: Supervisor Pi
+  tasks:
+
+    - name: Generating SSH key "{{ ssh_key_filename }}"
+      community.crypto.openssh_keypair:
+        path: "{{ ssh_key_filename }}"
+        type: rsa
+        size: 4096
+        state: present
+        force: false
+
+    - name: Authorize key with GitHub
+      community.general.github_key:
+        name: "{{ machine_name }}"
+        token: "{{ github_personal_access_token }}"
+        pubkey: "{{ lookup('ansible.builtin.file', ssh_key_filename + '.pub') }}"
+
+    - name: Removing authorized_keys
+      ansible.builtin.file:
+        path: '~/.ssh/authorized_keys'
+        state: absent
+
+    - name: Set authorized_keys from GitHub
+      ansible.posix.authorized_key:
+        user: "{{ ansible_user }}"
+        state: present
+        key: https://github.com/{{ github_user }}.keys
+
