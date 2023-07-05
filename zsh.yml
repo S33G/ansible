@@ -1,0 +1,33 @@
+---
+
+- name: ZSH
+  hosts: all
+  pre_tasks:
+
+    - name: Install ZSH
+      ansible.builtin.apt:
+        name: zsh
+        update_cache: true
+      become: true
+  roles:
+    - role: gantsign.oh-my-zsh
+      users:
+        - username: "{{ zsh_user | default(ansible_user) }}"
+          oh_my_zsh:
+            theme: bureau
+            plugins:
+              - 1password
+              - alias-finder
+              - aliases
+              - docker
+              - docker-compose
+              - git
+              - git-auto-fetch
+              - kubectl
+              - node
+              - safe-paste
+              - sudo
+              - terraform
+              - themes
+              - timer
+            write_zshrc: true
