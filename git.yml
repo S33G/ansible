@@ -1,6 +1,8 @@
 ---
 - name: Configure Git
-  hosts: supervisor
+  hosts:
+    # - supervisor
+    - docker
   vars:
     git_user_name: CJ
     git_user_email: dev@charlie.fyi
@@ -8,24 +10,24 @@
     git_editor: vim
   tasks:
 
-    - name: Ensure Git is installed
-      become: true
-      ansible.builtin.apt:
-        name: git
-        state: present
+    # - name: Ensure Git is installed
+    #   become: true
+    #   ansible.builtin.apt:
+    #     name: git
+    #     state: present
 
-    - name: Ensure Git Editor is installed ("{{ git_editor }}")
-      become: true
-      ansible.builtin.apt:
-        name: "{{ git_editor }}"
-        state: present
+    # - name: Ensure Git Editor is installed ("{{ git_editor }}")
+    #   become: true
+    #   ansible.builtin.apt:
+    #     name: "{{ git_editor }}"
+    #     state: present
 
-    - name: Ensure Git is up to date
-      become: true
-      ansible.builtin.apt:
-        name: git
-        state: present
-        only_upgrade: true
+    # - name: Ensure Git is up to date
+    #   become: true
+    #   ansible.builtin.apt:
+    #     name: git
+    #     state: present
+    #     only_upgrade: true
 
     - name: Enable colorful output
       community.general.git_config:

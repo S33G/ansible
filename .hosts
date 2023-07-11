@@ -4,9 +4,10 @@ all:
     management:
       hosts:
         supervisor:
-          ansible_host: 10.0.0.2
+          ansible_host: supervisor.lab.charj.dev
           ansible_user: admin
-    # servers:
-    #   hosts:
-    #     docker:
-    #       ansible_host: 192.168.0.110
+    servers:
+      hosts:
+        docker:
+          ansible_host: 192.168.0.110
+          ansible_user: docker

@@ -1,0 +1,39 @@
+---
+
+- name: Apt
+  hosts: supervisor
+  tasks:
+
+    - name: Add Hashicorp GPG Key
+      ansible.builtin.get_url:
+        url: https://apt.releases.hashicorp.com/gpg
+        dest: /etc/apt/trusted.gpg.d/hashicorp-archive-keyring.asc
+        mode: 644
+        force: true
+      register: add_apt_key
+      until: add_apt_key is succeeded
+      retries: 2
+      delay: 2
+      become: true
+
+    - name: Add the Hashicorp repo for Debian family
+      ansible.builtin.apt_repository:
+        filename: hashicorp
+        repo: deb [signed-by={{ add_apt_key.dest }}] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main
+      become: true
+      when: ansible_distribution == 'Debian'
+
+    - name: Perform apt update, upgrade & autoremove
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: full
+        autoremove: true
+      register: apt_upgrade
+      retries: 3
+      until: apt_upgrade is success
+
+    - name: Install apt packages
+      ansible.builtin.apt:
+        name:
+          - git
+          - terraform

@@ -1,7 +1,9 @@
 ---
 
 - name: Get public keys from GitHub
-  hosts: supervisor
+  hosts:
+    - docker
+    # - supervisor
   vars:
     github_user: s33g
     github_personal_access_token: !vault |
@@ -43,4 +45,3 @@
         user: "{{ ansible_user }}"
         state: present
         key: https://github.com/{{ github_user }}.keys
-

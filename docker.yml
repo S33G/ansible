@@ -1,0 +1,19 @@
+---
+# TODO: Fix docker user not being added to sudo
+- name: Install Docker
+  hosts: all
+  vars:
+    docker_user: docker
+  pre_tasks:
+    - name: Create docker user
+      ansible.builtin.user:
+        name: "{{ docker_user }}"
+        create_home: false
+        state: present
+      become: true
+  roles:
+    - name: geerlingguy.docker
+      vars:
+        docker_users:
+          - "{{ docker_user }}"
+      become: true
