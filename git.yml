@@ -15,26 +15,22 @@
       user.email: dev@charlie.fyi
       user.name: CJ
   tasks:
-
     - name: Ensure Git is installed
       become: true
       ansible.builtin.apt:
         name: git
         state: present
-
     - name: Ensure Git Editor is installed ("{{ editor }}")
       become: true
       ansible.builtin.apt:
         name: "{{ editor }}"
         state: present
-
     - name: Ensure Git is up to date
       become: true
       ansible.builtin.apt:
         name: git
         state: present
         only_upgrade: true
-
     - name: Configure Git config options
       community.general.git_config:
         name: "{{ item.key }}"
