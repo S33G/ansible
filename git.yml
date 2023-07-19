@@ -6,7 +6,6 @@
   vars:
     editor: vim
     disable_logging: false
-    only_show_keys: false
     git:
       color.ui: auto
       core.editor: "{{ editor }}"
