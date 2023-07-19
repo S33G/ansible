@@ -4,62 +4,42 @@
     # - supervisor
     - docker
   vars:
-    git_user_name: CJ
-    git_user_email: dev@charlie.fyi
-    git_default_branch: main
-    git_editor: vim
+    editor: vim
+    disable_logging: false
+    only_show_keys: false
+    git:
+      color.ui: auto
+      core.editor: "{{ editor }}"
+      init.defaultBranch: main
+      push.autoSetupRemote: true
+      user.email: dev@charlie.fyi
+      user.name: CJ
   tasks:
 
-    # - name: Ensure Git is installed
-    #   become: true
-    #   ansible.builtin.apt:
-    #     name: git
-    #     state: present
-
-    # - name: Ensure Git Editor is installed ("{{ git_editor }}")
-    #   become: true
-    #   ansible.builtin.apt:
-    #     name: "{{ git_editor }}"
-    #     state: present
-
-    # - name: Ensure Git is up to date
-    #   become: true
-    #   ansible.builtin.apt:
-    #     name: git
-    #     state: present
-    #     only_upgrade: true
-
-    - name: Enable colorful output
-      community.general.git_config:
-        name: color.ui
-        value: auto
+    - name: Ensure Git is installed
+      become: true
+      ansible.builtin.apt:
+        name: git
         state: present
 
-    - name: Ensure Git editor is `{{ git_editor }}`
-      community.general.git_config:
-        name: core.editor
-        value: "{{ git_editor }}"
-        scope: global
+    - name: Ensure Git Editor is installed ("{{ editor }}")
+      become: true
+      ansible.builtin.apt:
+        name: "{{ editor }}"
         state: present
 
-    - name: Ensure Git username is `{{ git_user_name }}`
-      community.general.git_config:
-        name: user.name
-        scope: global
-        value: "{{ git_user_name }}"
+    - name: Ensure Git is up to date
+      become: true
+      ansible.builtin.apt:
+        name: git
         state: present
+        only_upgrade: true
 
-    - name: Ensure Git email is `{{ git_user_email }}`
+    - name: Configure Git config options
       community.general.git_config:
-        name: user.email
-        scope: global
-        value: "{{ git_user_email }}"
+        name: "{{ item.key }}"
+        value: "{{ item.value }}"
+        scope: "global"
         state: present
-
-    - name: Ensure Git default branch is `{{ git_default_branch }}`
-      community.general.git_config:
-        name: init.defaultBranch
-        value: "{{ git_default_branch }}"
-        scope: global
-        state: present
-
+      loop: "{{ git | dict2items }}"
+      no_log: "{{ disable_logging | default(false) }}"
