@@ -1,8 +1,8 @@
 ---
 - name: Configure Git
   hosts:
-    # - supervisor
-    - docker
+    - supervisor
+    # - docker
   vars:
     editor: vim
     disable_logging: false
