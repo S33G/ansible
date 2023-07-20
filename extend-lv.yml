@@ -1,0 +1,40 @@
+---
+- name: Extend LVM
+  hosts:
+    - docker
+  become: true
+  vars:
+    device: sda
+    partition: 3
+    vg: ubuntu-vg
+    lv: ubuntu-lv
+
+  tasks:
+
+    - name: Check if parted is installed and exit
+      ansible.builtin.command:
+        cmd: "parted --version"
+      register: parted_installed
+      failed_when: parted_installed.rc != 0
+      changed_when: false
+
+    - name: Rescan disks
+      ansible.builtin.shell:
+        cmd: "echo 1 > /sys/block/{{ device }}/device/rescan"
+
+    - name: Extend an existing partition to fill all available space with growpart
+      ansible.builtin.shell:
+        cmd: "growpart /dev/{{ device }} {{ partition }}"
+
+    - name: Resize the volume group /dev/{{ device }}{{ partition }} to the maximum possible
+      community.general.lvg:
+        vg: "{{ vg }}"
+        pvs: /dev/{{ device }}{{ partition }}
+        pvresize: true
+
+    - name: Extend the logical volume to take all remaining space of the PVs and resize the underlying filesystem
+      community.general.lvol:
+        vg: "{{ vg }}"
+        lv: "{{ lv }}"
+        size: +100%FREE
+        resizefs: true
