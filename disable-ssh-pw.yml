@@ -1,0 +1,19 @@
+---
+
+- hosts: goodleaf
+  become: yes
+  tasks:
+    - name: Disable ssh password
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PasswordAuthentication'
+        line: 'PasswordAuthentication no'
+        state: present
+      notify:
+        - restart sshd
+
+  handlers:
+    - name: restart sshd
+      service:
+        name: sshd
+        state: restarted
