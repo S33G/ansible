@@ -43,7 +43,7 @@ Host {{ host.name }}
     ForwardX11Options {{ host.forward_x11_options }}
     {% endif -%}
 
-    {%- if host.forward_agent is defined  -%}
+    {%- if host.forward_agent is defined -%}
     ForwardAgent {{ host.forward_agent }}
     {% endif -%}
 
@@ -63,39 +63,39 @@ Host {{ host.name }}
     DynamicForward {{ host.dynamic_forward }}
     {% endif -%}
 
-    {% if host.tunnel is defined  -%}
+    {% if host.tunnel is defined -%}
     Tunnel {{ host.tunnel }}
     {% endif -%}
 
-    {% if host.tunnel_device is defined  -%}
+    {% if host.tunnel_device is defined -%}
     TunnelDevice {{ host.tunnel_device }}
     {% endif -%}
 
-    {%- if host.tunnel_port is defined  -%}
+    {%- if host.tunnel_port is defined -%}
     TunnelPort {{ host.tunnel_port }}
     {% endif -%}
 
-    {%- if host.tunnel_user is defined  -%}
+    {%- if host.tunnel_user is defined -%}
     TunnelUser {{ host.tunnel_user }}
     {% endif -%}
 
-    {%- if host.tunnel_password is defined  -%}
+    {%- if host.tunnel_password is defined -%}
     TunnelPassword {{ host.tunnel_password }}
     {% endif -%}
 
-    {%- if host.tunnel_key is defined  -%}
+    {%- if host.tunnel_key is defined -%}
     TunnelKey {{ host.tunnel_key }}
     {% endif %}
 
-    {%- if host.tunnel_command is defined  -%}
+    {%- if host.tunnel_command is defined -%}
     TunnelCommand {{ host.tunnel_command }}
     {% endif -%}
 
-    {% if host.tunnel_host is defined  -%}
+    {% if host.tunnel_host is defined -%}
     TunnelHost {{ host.tunnel_host }}
     {% endif -%}
 
-    {% if host.tunnel_port is defined  -%}
+    {% if host.tunnel_port is defined -%}
     TunnelPort {{ host.tunnel_port }}
     {% endif +%}
 {% endfor -%}
