@@ -1,0 +1,32 @@
+---
+
+# TODO: Validate ssh config before writing
+# TODO: Test all variables (Forwarding, ProxyCommand, etc)
+
+- name: SSH Config
+  hosts:
+    - supervisor
+    # - docker
+  vars:
+    ssh:
+      hosts:
+      - name: supervisor.lab.charj.dev
+        description: Supervisor Pi
+        hostname: supervisor.lab.charj.dev
+        user: supervisor
+      - name: printer.host.charj.dev
+        description: Printer Pi
+        hostname: printer.host.charj.dev
+        user: pi
+      - name: docker.lab.charj.dev
+        description: Docker Pi
+        hostname: docker.lab.charj.dev
+        user: pi
+  tasks:
+    - name: Create ssh config
+      ansible.builtin.template:
+        src: ssh_config.j2
+        dest: /tmp/ssh_config_test
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "0600"

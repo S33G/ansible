@@ -1,0 +1,101 @@
+{{ ansible_managed | comment }}
+
+{% for host in ssh.hosts -%}
+{% if host.description %}#{{ host.description }} {% endif +%}
+Host {{ host.name }}
+    {% if host.user is defined -%}
+    User {{ host.user }}
+    {% endif -%}
+
+    {%- if host.identity_file is defined -%}
+    IdentityFile {{ host.identity_file }}
+    {% endif -%}
+
+    {%- if host.hostname is defined -%}
+    HostName {{ host.hostname }}
+    {% endif -%}
+
+    {%- if host.port is defined -%}
+    Port {{ host.port }}
+    {% endif -%}
+
+    {%- if host.forward_agent is defined -%}
+    ForwardAgent {{ host.forward_agent }}
+    {% endif -%}
+
+    {%- if host.forward_x11 is defined -%}
+    ForwardX11 {{ host.forward_x11 }}
+    {% endif -%}
+
+    {%- if host.forward_x11_trusted is defined -%}
+    ForwardX11Trusted {{ host.forward_x11_trusted }}
+    {% endif -%}
+
+    {%- if host.forward_x11_timeout is defined -%}
+    ForwardX11Timeout {{ host.forward_x11_timeout }}
+    {% endif -%}
+
+    {%- if host.forward_x11_display is defined -%}
+    ForwardX11Display {{ host.forward_x11_display }}
+    {% endif -%}
+
+    {%- if host.forward_x11_options is defined -%}
+    ForwardX11Options {{ host.forward_x11_options }}
+    {% endif -%}
+
+    {%- if host.forward_agent is defined  -%}
+    ForwardAgent {{ host.forward_agent }}
+    {% endif -%}
+
+    {%- if host.proxy_command is defined -%} }}
+    ProxyCommand {{ host.proxy_command }}
+    {% endif -%}
+
+    {%- if host.local_forward is defined -%}
+    LocalForward {{ host.local_forward }}
+    {% endif -%}
+
+    {% if host.remote_forward is defined -%}
+    RemoteForward {{ host.remote_forward }}
+    {% endif -%}
+
+    {% if host.dynamic_forward is defined -%}
+    DynamicForward {{ host.dynamic_forward }}
+    {% endif -%}
+
+    {% if host.tunnel is defined  -%}
+    Tunnel {{ host.tunnel }}
+    {% endif -%}
+
+    {% if host.tunnel_device is defined  -%}
+    TunnelDevice {{ host.tunnel_device }}
+    {% endif -%}
+
+    {%- if host.tunnel_port is defined  -%}
+    TunnelPort {{ host.tunnel_port }}
+    {% endif -%}
+
+    {%- if host.tunnel_user is defined  -%}
+    TunnelUser {{ host.tunnel_user }}
+    {% endif -%}
+
+    {%- if host.tunnel_password is defined  -%}
+    TunnelPassword {{ host.tunnel_password }}
+    {% endif -%}
+
+    {%- if host.tunnel_key is defined  -%}
+    TunnelKey {{ host.tunnel_key }}
+    {% endif %}
+
+    {%- if host.tunnel_command is defined  -%}
+    TunnelCommand {{ host.tunnel_command }}
+    {% endif -%}
+
+    {% if host.tunnel_host is defined  -%}
+    TunnelHost {{ host.tunnel_host }}
+    {% endif -%}
+
+    {% if host.tunnel_port is defined  -%}
+    TunnelPort {{ host.tunnel_port }}
+    {% endif +%}
+{% endfor -%}
