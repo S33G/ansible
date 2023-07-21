@@ -2,6 +2,7 @@
 
 - name: Apt
   hosts: supervisor
+  become: true
   tasks:
 
     - name: Add Hashicorp GPG Key
@@ -14,14 +15,17 @@
       until: add_apt_key is succeeded
       retries: 2
       delay: 2
-      become: true
 
     - name: Add the Hashicorp repo for Debian family
       ansible.builtin.apt_repository:
         filename: hashicorp
         repo: deb [signed-by={{ add_apt_key.dest }}] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main
-      become: true
       when: ansible_distribution == 'Debian'
+
+    - name: Run the equivalent of "apt-get clean" as a separate step
+      apt:
+        clean: yes
+        autoclean: yes
 
     - name: Perform apt update, upgrade & autoremove
       ansible.builtin.apt:
@@ -29,7 +33,7 @@
         upgrade: full
         autoremove: true
       register: apt_upgrade
-      retries: 3
+      retries: 0
       until: apt_upgrade is success
 
     - name: Install apt packages
@@ -37,3 +41,5 @@
         name:
           - git
           - terraform
+          - parted
+          - nmap
