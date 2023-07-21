@@ -1,0 +1,69 @@
+---
+
+- name: DNS
+  hosts:
+    - supervisor
+    - docker
+  vars:
+    dns:
+      servers:
+        - name: primary
+          address: 10.10.0.10
+        - name: secondary
+          address: 10.0.0.2
+      nameservers:
+        - 1.0.0.1
+        - 1.1.1.1
+      options:
+        - log-queries
+        - no-resolv
+        - no-poll
+        - strict-order
+      search: lab.charj.dev
+      addresses:
+        - name: udm.lab.charj.dev
+          address: 192.168.1.1
+        - name: vcsa.lab.charj.dev
+          address: 10.0.0.5
+        - name: esxi.lab.charj.dev
+          address: 10.0.0.10
+        - name: idrac.lab.charj.dev
+          address: 10.0.0.11
+        - name: supervisor.lab.charj.dev
+          address: 10.0.0.2
+        - name: printer.host.charj.dev
+          address: 192.168.1.150
+        - name: streaming.host.charj.dev
+          address: 10.10.0.20
+        - name: primary.dns.host.charj.dev
+          address: 10.10.0.10
+        - name: secondary.dns.host.charj.dev
+          address: 10.0.0.2
+        - name: homeassistant.host.charj.dev
+          address: 10.10.0.21
+        - name: charlie.tel.lab.charj.dev
+          address: 192.168.40.5
+        - name: beth.tel.lab.charj.dev
+          address: 192.168.40.4
+        - name: docker.lab.charj.dev
+          address: 10.10.0.10
+        - name: lab.charj.dev
+          address: 10.10.0.10
+  tasks:
+    - name: Create dnsmasq.conf
+      ansible.builtin.template:
+        src: dnsmasq.conf.j2
+        dest: ~/docker/dnsmasq/dnsmasq.conf
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "0644"
+        validate: "docker run --rm -v %s:/file aciobanu/dnsmasq --test -C /file"
+      notify: Restart the dnsmasq container
+
+  handlers:
+    - name: Restart the dnsmasq container
+      community.docker.docker_container:
+        name: dns
+        state: started
+        restart: true
+      throttle: 1
