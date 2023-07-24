@@ -1,0 +1,21 @@
+---
+
+- name: Check if git is installed, if not install it
+  ansible.builtin.stat:
+    path: /usr/bin/git
+  register: git_installed
+  failed_when: false
+  changed_when: false
+
+- name: Install git
+  ansible.builtin.include_tasks: install.yml
+  when: not git_installed.stat.exists
+
+- name: Configure Git config options
+  community.general.git_config:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    scope: "global"
+    state: present
+  loop: "{{ git | dict2items }}"
+  no_log: "{{ disable_logging | default(false) }}"

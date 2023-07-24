@@ -1,0 +1,7 @@
+---
+- name: Restart the dnsmasq container
+  community.docker.docker_container:
+    name: dns
+    state: started
+    restart: true
+  throttle: 1

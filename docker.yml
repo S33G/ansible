@@ -1,9 +1,0 @@
----
-- name: Install Docker
-  hosts: goodleaf
-  roles:
-    - name: geerlingguy.docker
-      vars:
-        docker_users:
-          - "{{ ansible_user }}"
-      become: true

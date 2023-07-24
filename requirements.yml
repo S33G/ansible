@@ -1,0 +1,9 @@
+---
+
+roles:
+  - name: geerlingguy.docker
+
+collections:
+  - geerlingguy.docker
+  - community.general
+  - gantsign.oh-my-zsh

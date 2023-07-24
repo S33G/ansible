@@ -1,0 +1,6 @@
+---
+
+- name: Generate Traefik provider
+  hosts: docker
+  roles:
+    - traefik_provider

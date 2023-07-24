@@ -1,0 +1,9 @@
+editor: vim
+disable_logging: false
+git:
+  color.ui: auto
+  core.editor: "{{ editor }}"
+  init.defaultBranch: main
+  push.autoSetupRemote: true
+  user.email: dev@charlie.fyi
+  user.name: CJ

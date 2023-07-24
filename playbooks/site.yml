@@ -1,0 +1,20 @@
+---
+
+- name: Tasks for all hosts
+  vars_files:
+    - ./vault.yml
+  hosts: all
+  remote_user: "{{ ansible_user }}"
+  become: true
+  pre_tasks:
+    - name: Check if github_personal_access_token is Set
+      ansible.builtin.fail:
+        msg: "github_personal_access_token is not set"
+      when: github_personal_access_token is not defined
+  roles:
+    - git
+    - role: gantsign.oh-my-zsh
+      users:
+        - username: "{{ ansible_user }}"
+          theme: "{{ oh_my_zsh_theme }}"
+          plugins: "{{ oh_my_zsh_plugins }}"

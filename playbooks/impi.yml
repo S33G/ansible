@@ -1,0 +1,6 @@
+---
+
+- name: IDRAC hosts
+  hosts: idracs
+  roles:
+    - idrac-quiet-fans

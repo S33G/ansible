@@ -1,0 +1,25 @@
+---
+
+apt:
+  packages:
+    - git
+    - zsh
+
+oh_my_zsh_plugins:
+  - ansible
+  - git
+  - docker
+  - docker-compose
+  - emoji
+  - git-auto-fetch
+  - github
+  - gitignore
+  - git-prompt
+  - history-substring-search
+  - node
+  - pip
+  - screen
+  - thefuck
+  - zsh-autosuggestions
+  - zsh-syntax-highlighting
+

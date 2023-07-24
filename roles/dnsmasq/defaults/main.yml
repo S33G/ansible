@@ -1,0 +1,52 @@
+dns:
+  servers:
+    - name: primary
+      address: 10.10.0.10
+    - name: secondary
+      address: 10.0.0.2
+  nameservers:
+    - 1.0.0.1
+    - 1.1.1.1
+  options:
+    - log-queries
+    - no-resolv
+    - no-poll
+    - strict-order
+  search: lab.charj.dev
+  addresses:
+    - name: udm.lab.charj.dev
+      address: 192.168.1.1
+    - name: vcsa.lab.charj.dev
+      address: 10.0.0.5
+    - name: esxi.alpha.lab.charj.dev
+      address: 10.0.0.10
+    - name: esxi.bravo.lab.charj.dev
+      address: 10.0.0.20
+    - name: truenas.host.charj.dev
+      address: 10.0.0.21
+    - name: idrac.alpha.lab.charj.dev
+      address: 10.0.0.100
+    - name: idrac.bravo.lab.charj.dev
+      address: 10.0.0.200
+    - name: supervisor.lab.charj.dev
+      address: 10.0.0.2
+    - name: laptop.host.charj.dev
+      address: 10.42.0.70
+    - name: printer.host.charj.dev
+      address: 192.168.1.150
+    - name: streaming.host.charj.dev
+      address: 10.10.0.20
+    - name: primary.dns.host.charj.dev
+      address: 10.10.0.10
+    - name: secondary.dns.host.charj.dev
+      address: 10.0.0.2
+    - name: homeassistant.host.charj.dev
+      address: 10.10.0.21
+    - name: charlie.tel.lab.charj.dev
+      address: 192.168.40.5
+    - name: beth.tel.lab.charj.dev
+      address: 192.168.40.4
+    - name: docker.lab.charj.dev
+      address: 10.10.0.10
+    - name: lab.charj.dev
+      address: 10.10.0.10

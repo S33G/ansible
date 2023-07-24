@@ -1,0 +1,11 @@
+---
+
+- name: Docker hosts
+  vars_files:
+    - ./vault.yml
+  hosts: docker_hosts
+  remote_user: "{{ ansible_user }}"
+  become: true
+  roles:
+    - docker
+

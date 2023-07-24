@@ -1,0 +1,8 @@
+---
+
+- name: DNS servers
+  hosts: dns_servers
+  remote_user: root
+  become: true
+  roles:
+    - dnsmasq
