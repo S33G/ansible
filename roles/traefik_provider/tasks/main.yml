@@ -7,4 +7,5 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: "0644"
-    # validate: "docker run --rm -v %s:/file aciobanu/dnsmasq --test -C /file"
+    # validate: "docker run --rm -v %s:/tmp/traefik.yml ghcr.io/otto-de/traefik-config-validator:v0.0.2 -cfg /tmp/traefik.yml"
+  notify: Restart the traefik container

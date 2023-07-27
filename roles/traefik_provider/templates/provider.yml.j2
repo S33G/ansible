@@ -1,29 +1,35 @@
 {{ ansible_managed | comment }}
 
+
+####
 http:
   routers:
-    {% for router in traefik.routers +%}
+    {% for router in traefik.groups +%}
     {% if traefik.debug -%}
-    # Proxy: https://{{ router.hostname }} -> {{ router.url }}
+    # https://{{ router.hostname }} -> {{ router.ip }}
     {% endif -%}
-    {{ router.service }}:
+    {{ router.name | lower | replace(' ', '-')  }}:
       entryPoints:
         - "https"
       rule: "Host(`{{ router.hostname }}`)"
       middlewares:
         - https-redirectscheme
       tls: {}
-      service: {{ router.service }}
+      service: {{ router.name | lower | replace(' ', '-')  }}
     {% endfor +%}
   services:
-    {% for service in traefik.routers +%}
-    {% if traefik.debug -%}
-    # Proxy: https://{{ service.hostname }} -> {{ service.url }}
-    {% endif -%}
-    {{ service.service }}:
+    {% for service in traefik.groups +%}
+    {% set port = service.traefik.port | default(80) -%}
+    {% set protocol = service.traefik.protocol | default('http') -%}
+    {% set address = service.traefik.address | default(service.ip) -%}
+    {% set name = service.name | lower | replace(' ', '-')  %}
+    {%- if traefik.debug -%}
+    # [{{ name }}] :: {{ address }} ==> {{ protocol }}://{{ address }}:{{ port }}
+    {% endif +%}
+    {{ name }}:
       loadBalancer:
         servers:
-          - url: "{{ service.url }}"
+          - url: "{{ protocol }}://{{ address }}:{{ port }}"
     {% endfor %}
 
   middlewares:
