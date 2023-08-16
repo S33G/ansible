@@ -1,4 +1,6 @@
-dns:
+---
+
+dnsmasq:
   servers:
     - name: primary
       address: 10.10.0.10
@@ -14,6 +16,8 @@ dns:
     - strict-order
   search: lab.charj.dev
   addresses:
+    - name: supervisor.local
+      address: "{{ ips.supervisor }}"
     - name: udm.lab.charj.dev
       address: 192.168.1.1
     - name: vcsa.lab.charj.dev
@@ -38,15 +42,15 @@ dns:
       address: 10.10.0.20
     - name: primary.dns.host.charj.dev
       address: 10.10.0.10
-    - name: secondary.dns.host.charj.dev
+    - name: dns1.local
       address: 10.0.0.2
-    - name: homeassistant.host.charj.dev
-      address: 10.10.0.21
+    - name: dns2.local
+      address: 10.10.0.10
     - name: charlie.tel.lab.charj.dev
       address: 192.168.40.5
     - name: beth.tel.lab.charj.dev
       address: 192.168.40.4
-    - name: docker.lab.charj.dev
-      address: 10.10.0.10
+    - name: docker.local
+      address: "{{ ips.docker }}"
     - name: lab.charj.dev
       address: 10.10.0.10

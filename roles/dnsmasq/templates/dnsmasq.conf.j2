@@ -1,21 +1,21 @@
 {{ ansible_managed | comment }}
 
 # Search Domain
-{% if dns.search -%}
-local=/{{ dns.search }}./
+{% if dnsmasq.search -%}
+local=/{{ dnsmasq.search }}./
 {% endif %}
 
 # Options
-{% for option in dns.options -%}
+{% for option in dnsmasq.options -%}
 {{ option }}
 {% endfor %}
 
 # Addresses
-{% for record in dns.addresses -%}
+{% for record in dnsmasq.addresses -%}
 address=/{{ record.name }}/{{ record.address }}
 {% endfor %}
 
 # Name Servers
-{% for ns in dns.nameservers -%}
+{% for ns in dnsmasq.nameservers -%}
 server={{ ns }}
 {% endfor %}
