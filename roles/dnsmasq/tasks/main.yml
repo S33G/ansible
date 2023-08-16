@@ -1,5 +1,10 @@
 ---
 
+
+- name: show templating results
+  ansible.builtin.debug:
+    msg: "{{ lookup('ansible.builtin.template', '../templates/dnsmasq.conf.j2') }}"
+
 - name: Create dnsmasq.conf
   ansible.builtin.template:
     src: dnsmasq.conf.j2
@@ -7,8 +12,13 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: "0644"
-    validate: "docker run --rm -v %s:/file aciobanu/dnsmasq --test -C /file"
+    validate: "docker run --rm -v %s:/file strm/dnsmasq --test -C /file"
   notify: Restart the dnsmasq container
+
+
+- name: Debug dnsmasq.conf
+  ansible.builtin.debug:
+    msg: "{{ lookup('file', '/etc/dnsmasq.conf') }}"
 
 - name: Stop existing dnsmasq containers
   community.general.docker_container:
